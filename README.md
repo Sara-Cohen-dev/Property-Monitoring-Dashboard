@@ -16,11 +16,19 @@ Managing large-scale property portfolios requires tight oversight of municipal i
 ---
 
 ## ✨ Key Features
-* **Live Data Acquisition:** Fetch up-to-date information from the LAHD portal by APN at the click of a button.
+* **Live Data Acquisition:** Multi-layered Data Acquisition: Automated navigation through the LAHD portal to retrieve both high-level case summaries and deep-dive historical activity.
 * **Smart Urgency Mapping:** Automated classification of cases into visual statuses: `Critical` (Emergency/Legal), `Overdue`, or `Active`.
 * **Color-Coded Priority System:** High-visibility table cells (Red/Orange/Gray/Green) for instant risk identification.
 * **Deep-Dive Case Details:** Interactive rows reveal the nature of the violation, the current procedural step, and the full activity history.
 * **Deadline Management:** Clear visibility of due dates to prevent fines and legal sanctions.
+
+---
+
+## 🏗️ System Architecture
+The dashboard is designed with a clear separation of concerns:
+* **Core Logic & Extraction (`processor.py`):** A unified engine that handles multi-layered scraping, parsing complex HTML tables, and calculating urgency scores.
+* **Data Persistence (`database.py`):** Manages SQLite storage for property profiles and case histories, enabling offline access and future change-tracking.
+* **Interactive UI (`app.py`):** A Streamlit interface providing real-time data visualization, filtering, and executive summaries.
 
 ---
 
@@ -44,19 +52,31 @@ git clone https://github.com/Sara-Cohen-dev/Property-Monitoring-Dashboard.git
 cd Property-Monitoring-Dashboard
 ```
 
-### 2. Install Dependencies:
+### 2. Create and Activate a Virtual Environment (Recommended)
+```bash
+# Create environment
+python -m venv venv
+
+# Activate (Windows)
+venv\Scripts\activate
+
+# Activate (Mac/Linux)
+source venv/bin/activate
+```
+
+### 3. Install Dependencies:
 ```bash
 pip install -r requirements.txt
 ```
 
-### 3. Run the Dashboard:
+### 4. Run the Dashboard:
 ```bash
-streamlit run app.py
+python -m streamlit run src/app.py
 ```
-### 4. Run the Tests (Optional)
+### 5. Run the Tests (Optional)
 To ensure data integrity and scraping logic accuracy, run the automated test suite:
 ```bash
-pytest tests
+python -m pytest tests
 ```
 
 ## 🔍 Data Strategy: What we track & Why
@@ -68,6 +88,7 @@ Every data field was selected to serve a specific business need:
 * **Nature of Case:** Allows the manager to understand the specific physical defect (e.g., plumbing or smoke detectors).
 * **Current Step:** Indicates exactly where the case stands within the city bureaucracy.
 * **Opening/Closing Dates:** For chronological tracking and performance auditing of resolution times.
+* **Case Consolidation Logic: Developed to handle complex legal lifecycles (e.g., SCEP inspections transitioning into REAP). The system groups related activities by Case Number to provide a single, unified status for each legal proceeding.
 
 ---
 
