@@ -29,6 +29,7 @@ Managing large-scale property portfolios requires tight oversight of municipal i
 * **Data Grid:** Streamlit-AgGrid – Powering interactive tables with conditional formatting and advanced filtering.
 * **Scraping:** BeautifulSoup4 & Requests – For precise data extraction from complex HTML structures.
 * **Database:** SQLite – Local, persistent data management.
+* **Tests:** Pytest
 
 ---
 ## 🚀 Getting Started
@@ -51,6 +52,11 @@ pip install -r requirements.txt
 ### 3. Run the Dashboard:
 ```bash
 streamlit run app.py
+```
+### 4. Run the Tests (Optional)
+To ensure data integrity and scraping logic accuracy, run the automated test suite:
+```bash
+pytest tests
 ```
 
 ## 🔍 Data Strategy: What we track & Why
