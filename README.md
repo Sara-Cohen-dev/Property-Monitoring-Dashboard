@@ -133,6 +133,7 @@ Every data field was selected to serve a specific business need:
 * **Auto-Sync Engine:** A background process (Scheduled Task) to periodically scan all APNs in the database and update records automatically.
 * **Real-Time Alerts:** Integration with WhatsApp/Email to push notifications the moment a critical change is detected.
 * **Multi-Property Portfolio View:** A global dashboard featuring an aggregated "Health Score" per asset.
+* **Advanced Case Lifecycle Tracking:** Transitioning from a flat list to a nested "Case-Parent" view, allowing managers to see the full chronological evolution of a specific legal case while maintaining data accuracy.
 
 ---
 

@@ -58,3 +58,6 @@ The system utilizes **SQLite** for local, persistent data management.
 * **Testing:** * **Unit Tests:** Parsing accuracy via local HTML mocks.
     * **Integration Tests:** End-to-end flow from Scraping to DB persistence.
     * **UI Tests:** Date formatting and search filter verification in `ui_utils`.
+
+## 7. Design Decisions & Trade-offs
+* **Flat vs. Grouped View:** During the data analysis phase, I evaluated grouping records by Case Number to provide a unified lifecycle. However, I identified edge cases where multiple active processes exist for a single ID. To ensure 100% transparency and prevent data loss, I chose a Granular Flat View. A hierarchical "Parent-Child" UI is planned for future versions to balance clarity and detail.
