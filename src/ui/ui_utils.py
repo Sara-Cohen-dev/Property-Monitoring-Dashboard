@@ -2,7 +2,37 @@ import pandas as pd
 from st_aggrid import AgGrid, GridOptionsBuilder, ColumnsAutoSizeMode, GridUpdateMode, JsCode
 import streamlit as st
 
-# --- Cell coloring logic ---
+# --- CSS styling moved from App ---
+def inject_custom_css():
+    st.markdown("""
+    <style>
+    .block-container { padding-top: 1rem; padding-bottom: 0rem; }
+    .side-info-box { padding: 12px; background-color: #f1f5f9; border-radius: 8px; border: 1px solid #cbd5e1; color: #0f172a; }
+    .details-wrapper { background: #f8fafc; padding: 15px; border-radius: 10px; border: 2px solid #e2e8f0; margin-top: 15px; color: #0f172a; }
+    .ag-theme-alpine { --ag-selected-row-background-color: #f1f5f9 !important; }
+    .ag-theme-alpine .ag-cell { display: flex; align-items: center; justify-content: center; }
+    .critical-badge { 
+        background-color: #fee2e2; border: 1px solid #fecaca; color: #dc2626; 
+        padding: 3px 6px; border-radius: 4px; margin-bottom: 10px; 
+        font-size: 0.8em; display: inline-block; width: fit-content; 
+    }
+    </style>
+    """, unsafe_allow_html=True)
+
+# --- Components ---
+def render_sidebar_info(prop_info):
+    if prop_info:
+        st.markdown(f"""<div class="side-info-box">
+            <b>Address:</b> {prop_info["address"]}<br>
+            <b>Units:</b> {prop_info["total_units"]}<br>
+            <b>Office:</b> {prop_info["regional_office"]}
+        </div>""", unsafe_allow_html=True)
+
+def render_critical_alert(show):
+    if show:
+        st.markdown('<div class="critical-badge">⚠ Critical issues detected</div>', unsafe_allow_html=True)
+
+# --- AgGrid Logic ---
 cell_style_jscode = JsCode("""
 function(params) {
     if (params.value === 'Critical') return {'color': 'white', 'background-color': '#ef4444', 'font-weight': 'bold'};
@@ -72,7 +102,6 @@ def render_table(data, key, cols_to_show, TYPE_EXPLANATIONS, search_query):
 
     if selected_row is not None:
         exp = TYPE_EXPLANATIONS.get(selected_row['Type'], "")
-        
         st.markdown(f"""
         <div class="details-wrapper">
             <div style="font-weight:700; color:#1e3a8a; border-bottom: 1px solid #e2e8f0; padding-bottom: 5px;">
