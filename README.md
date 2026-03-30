@@ -4,6 +4,18 @@
 A strategic management dashboard designed for Los Angeles property managers. This tool automates the monitoring of Housing Department (LAHD) inspections, identifies safety violations, and manages priorities in real-time.
 
 ---
+## 📑 Table of Contents
+* [🎯 The Business Challenge](#-the-business-challenge)
+* [✨ Key Features](#-key-features)
+* [🏗️ System Architecture](#️-system-architecture)
+* [📁 Project Structure](#-project-structure)
+* [🛠 Tech Stack](#-tech-stack)
+* [🚀 Getting Started (Installation)](#-getting-started)
+* [🔍 Data Strategy & Logic](#-data-strategy-what-we-track--why)
+* [📈 Future Roadmap](#-future-roadmap)
+* [🚀 Production-Grade Scaling](#️-production-grade-scaling)
+
+---
 
 ## 🎯 The Business Challenge
 Managing large-scale property portfolios requires tight oversight of municipal inspections. Currently, the process is flawed:
@@ -25,16 +37,9 @@ Managing large-scale property portfolios requires tight oversight of municipal i
 ---
 
 ## 🏗️ System Architecture
-The project follows **Clean Architecture** principles, ensuring a strict separation of concerns:
+This project is built using **Clean Architecture** and follows the **Open/Closed Principle**.
 
-* **Data Layer (`src/data/`):**
-    * `scraper.py`: Handles network requests and navigation logic.
-    * `parsing.py`: Pure logic for extracting data from HTML structures.
-    * `processor.py`: The "Business Brain" – calculates urgency, flags new cases, and enriches data.
-    * `database.py`: Repository pattern for SQLite persistence and change tracking.
-* **UI Layer (`src/ui/`):**
-    * `ui_utils.py`: Reusable UI components and AgGrid configurations (DRY principle).
-* **Entry Point (`app.py`):** A streamlined Streamlit interface orchestrating the data flow and visualization.
+> **Technical Deep Dive:** For detailed engineering patterns, Database Schema, and Sequence Diagrams, please refer to the [**High-Level Design (HLD) Document**](./HLD.md).
 
 ---
 
