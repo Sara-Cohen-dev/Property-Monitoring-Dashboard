@@ -128,7 +128,7 @@ Every data field was selected to serve a specific business need:
 * **Current Implementation:** Automatically flags cases opened within the last 14 days as **"New"** for immediate visibility.
 * **Future Roadmap:** Implementing **Field-Level Delta-Checks**. This will track updates to existing cases (status changes, new steps, or shifted deadlines), as a procedural update is often as critical as a new case.
 
-### Future Improvements & Scalability:
+## 📈 Future Roadmap
 * **Sensitive Change Detection:** Flagging updates to existing cases as "New" to ensure immediate attention rather than just tracking new cases.
 * **Auto-Sync Engine:** A background process (Scheduled Task) to periodically scan all APNs in the database and update records automatically.
 * **Real-Time Alerts:** Integration with WhatsApp/Email to push notifications the moment a critical change is detected.
