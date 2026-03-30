@@ -39,7 +39,7 @@ Follow these steps to get the dashboard up and running on your local machine:
 ### 1. Clone the Repository
 Open your terminal and run:
 ```bash
-git clone [https://github.com/Sara-Cohen-dev/Property-Monitoring-Dashboard.git](https://github.com/Sara-Cohen-dev/Property-Monitoring-Dashboard.git)
+git clone https://github.com/Sara-Cohen-dev/Property-Monitoring-Dashboard.git
 cd Property-Monitoring-Dashboard
 ```
 
