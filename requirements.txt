@@ -4,4 +4,4 @@ beautifulsoup4
 urllib3
 streamlit
 streamlit-aggrid
-python-decouple
+pytest
