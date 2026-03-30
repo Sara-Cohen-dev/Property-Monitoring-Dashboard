@@ -44,20 +44,31 @@ git clone https://github.com/Sara-Cohen-dev/Property-Monitoring-Dashboard.git
 cd Property-Monitoring-Dashboard
 ```
 
-### 2. Install Dependencies:
+### 2. Create and Activate a Virtual Environment (Recommended)
+```bash
+# Create environment
+python -m venv venv
+
+# Activate (Windows)
+venv\Scripts\activate
+
+# Activate (Mac/Linux)
+source venv/bin/activate
+```
+
+### 3. Install Dependencies:
 ```bash
 pip install -r requirements.txt
 ```
 
-### 3. Run the Dashboard:
+### 4. Run the Dashboard:
 ```bash
-streamlit run app.py
+python -m streamlit run src/app.py
 ```
-### 4. Run the Tests (Optional)
+### 5. Run the Tests (Optional)
 To ensure data integrity and scraping logic accuracy, run the automated test suite:
 ```bash
-pytest tests
-```
+python -m pytest tests```
 
 ## 🔍 Data Strategy: What we track & Why
 Every data field was selected to serve a specific business need:
