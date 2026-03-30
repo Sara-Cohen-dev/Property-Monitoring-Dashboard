@@ -1,31 +1,27 @@
-import os
-import tempfile
 import pytest
 import pandas as pd
 import sqlite3
-import src.database as db
-from src.database import init_db, save_dashboard_data, get_dashboard_data
+from src.data.database import DashboardRepository
 
 @pytest.fixture
-def test_db():
-    with tempfile.TemporaryDirectory() as d:
-        db_path = os.path.join(d, 'test_property_monitoring.db')
-        db.DB_NAME = db_path
-        init_db()
-        
-        conn = sqlite3.connect(db_path)
-        yield conn
-        conn.close()
+def repo(tmp_path):
+    db_path = tmp_path / 'test_property_monitoring.db'
+    repository = DashboardRepository(str(db_path))
+    return repository
 
-def test_init_tables(test_db):
-    cursor = test_db.cursor()
+
+def test_init_tables(repo):
+    conn = sqlite3.connect(repo.db_name)
+    cursor = conn.cursor()
     cursor.execute("SELECT name FROM sqlite_master WHERE type='table';")
     tables = [t[0] for t in cursor.fetchall()]
-    
+    conn.close()
+
     assert 'properties' in tables
     assert 'cases' in tables
 
-def test_save_dashboard_data(test_db):
+
+def test_save_dashboard_data(repo):
     apn = "123456789"
     prop_info = {
         "address": "123 Test St",
@@ -34,7 +30,6 @@ def test_save_dashboard_data(test_db):
     }
     cases_df = pd.DataFrame({
         "case_number": ["C001", "C002"],
-        "apn": [apn, apn],
         "type": ["Complaint", "Hearing"],
         "status": ["Open", "Closed"],
         "urgency": ["Critical", "Safe"],
@@ -47,37 +42,50 @@ def test_save_dashboard_data(test_db):
         "is_new": [1, 0]
     })
 
-    save_dashboard_data(apn, prop_info, cases_df)
+    repo.save_dashboard_data(apn, prop_info, cases_df)
 
-    cursor = test_db.cursor()
+    conn = sqlite3.connect(repo.db_name)
+    cursor = conn.cursor()
     cursor.execute("SELECT address, total_units FROM properties WHERE apn = ?", (apn,))
     prop_row = cursor.fetchone()
+    conn.close()
+
     assert prop_row == ("123 Test St", "10")
 
-    cases = pd.read_sql("SELECT * FROM cases WHERE apn = ?", test_db, params=(apn,))
+    conn = sqlite3.connect(repo.db_name)
+    cases = pd.read_sql("SELECT * FROM cases WHERE apn = ?", conn, params=(apn,))
+    conn.close()
     assert len(cases) == 2
     assert "C001" in cases['case_number'].values
 
-def test_get_dashboard_data(test_db):
+
+def test_get_dashboard_data(repo):
     apn = "987654321"
     prop_info = {"address": "Main St", "total_units": "5", "regional_office": "North"}
     cases_df = pd.DataFrame({
-        "case_number": ["C999"], "apn": [apn], "type": ["Inspection"],
-        "status": ["Open"], "urgency": ["High"],
-        "opened_date": ["2024-01-01"], "deadline_date": ["2024-02-01"],
-        "closed_date": [None], "last_activity": ["2024-01-05"],
-        "nature": ["Roof"], "current_step": ["Review"], "is_new": [0]
+        "case_number": ["C999"],
+        "type": ["Inspection"],
+        "status": ["Open"],
+        "urgency": ["High"],
+        "opened_date": ["2024-01-01"],
+        "deadline_date": ["2024-02-01"],
+        "closed_date": [None],
+        "last_activity": ["2024-01-05"],
+        "nature": ["Roof"],
+        "current_step": ["Review"],
+        "is_new": [0]
     })
 
-    save_dashboard_data(apn, prop_info, cases_df)
-    
-    prop, df = get_dashboard_data(apn)
-    
+    repo.save_dashboard_data(apn, prop_info, cases_df)
+
+    prop, df = repo.get_dashboard_data(apn)
+
     assert prop["address"] == "Main St"
     assert len(df) == 1
     assert df.iloc[0]['case_number'] == "C999"
 
-def test_get_dashboard_data_no_data(test_db):
-    prop, df = get_dashboard_data("nonexistent")
+
+def test_get_dashboard_data_no_data(repo):
+    prop, df = repo.get_dashboard_data("nonexistent")
     assert prop is None
     assert df.empty

@@ -1,7 +1,7 @@
 import pytest
 import pandas as pd
 from datetime import datetime, timedelta
-from src.processor import apply_business_logic
+from src.data.processor import enrich_cases
 
 def test_apply_business_logic():
     future_date = datetime.now() + timedelta(days=30)
@@ -18,19 +18,16 @@ def test_apply_business_logic():
         "is_new": [0, 0, 0, 0]
     })
 
-    result = apply_business_logic(df)
+    result = enrich_cases(df)
 
     assert result.loc[result['case_number'] == 'C001', 'urgency'].values[0] == 'Critical'
-    
     assert result.loc[result['case_number'] == 'C002', 'urgency'].values[0] == 'Active'
-    
     assert result.loc[result['case_number'] == 'C003', 'urgency'].values[0] == 'Safe'
-    
     assert result.loc[result['case_number'] == 'C004', 'urgency'].values[0] == 'Critical'
 
 def test_apply_business_logic_empty():
     df = pd.DataFrame()
-    result = apply_business_logic(df)
+    result = enrich_cases(df)
     assert result.empty
 
 def test_apply_business_logic_overdue():
@@ -45,5 +42,5 @@ def test_apply_business_logic_overdue():
         "is_new": [0]
     })
 
-    result = apply_business_logic(df)
+    result = enrich_cases(df)
     assert result.loc[0, 'urgency'] == 'Overdue'
