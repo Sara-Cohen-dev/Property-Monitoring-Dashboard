@@ -68,7 +68,8 @@ python -m streamlit run src/app.py
 ### 5. Run the Tests (Optional)
 To ensure data integrity and scraping logic accuracy, run the automated test suite:
 ```bash
-python -m pytest tests```
+python -m pytest tests
+```
 
 ## 🔍 Data Strategy: What we track & Why
 Every data field was selected to serve a specific business need:
