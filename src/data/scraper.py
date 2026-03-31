@@ -47,7 +47,12 @@ class LAHDScraper(LAHDParser):
             return None, None, None, nature, "N/A"
 
         events.sort(key=lambda item: item[0], reverse=True)
-        opened_dt = min(dt for dt, _ in events)
+
+        complaint_received_dt = next((dt for dt, status in events if "Complaint Received" in status), None)    
+        if complaint_received_dt:
+            opened_dt = complaint_received_dt
+        else:
+           opened_dt = min(dt for dt, _ in events)
         last_act = events[0][0]
         last_step = events[0][1]
         final_deadline = self._choose_deadline(found_deadlines)
