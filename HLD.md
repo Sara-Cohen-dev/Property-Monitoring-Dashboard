@@ -79,7 +79,7 @@ The system will utilize a relational database (e.g., SQLite for MVP, structured 
 
 #### Table: `properties` (Master Data)
 Will store core asset information.
-* **Fields:** `apn`, `address`, `total_units`, `regional_office`, `last_updated`.
+* **Fields:** `apn`, `address`, `total_units`, `regional_office`.
 
 #### Table: `cases` (Transactional Data)
 Will store ongoing and historical legal events.
